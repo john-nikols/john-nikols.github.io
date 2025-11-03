@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #606746;
+            --background: #0f0f0f;
+            --secondary: #dcdccf;
+            --accent: #a2a87b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--secondary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(15,15,15,0.95) 0%, rgba(15,15,15,0) 100%);
+            transition: background 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(15,15,15,0.98);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.3s;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: color 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            position: relative;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15,15,15,0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(96,103,70,0.3);
+            padding: 1rem 0;
+            min-width: 250px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .nav-links li:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            animation: none;
+            opacity: 1;
+        }
+
+        .dropdown a:hover {
+            background: rgba(96,103,70,0.2);
+        }
+
+        .nav-links a:nth-child(1) { animation-delay: 0.4s; }
+        .nav-links a:nth-child(2) { animation-delay: 0.5s; }
+        .nav-links a:nth-child(3) { animation-delay: 0.6s; }
+        .nav-links a:nth-child(4) { animation-delay: 0.7s; }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Home Hero */
+        .hero {
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            padding: 8rem 2rem 2rem;
+        }
+
+        .hero-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero.active {
+            display: flex;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(96,103,70,0.1) 0%, transparent 70%);
+            opacity: 0;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        .hero-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease forwards 0.5s;
+            text-align: center;
+        }
+
+        .hero-tagline {
+            font-size: 1.1rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease forwards 1s;
+            text-align: center;
+        }
+
+        .cta-button {
+            padding: 1rem 3rem;
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease forwards 1.5s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(96,103,70,0.3);
+        }
+
+        /* Portfolio Selection Page */
+        .portfolio-selection {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8rem 4rem 4rem;
+        }
+
+        .portfolio-selection .section-title,
+        .portfolio-selection .section-subtitle {
+            text-align: center;
+            width: 100%;
+        }
+
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+            max-width: 1200px;
+            width: 100%;
+            margin: 4rem auto 0;
+        }
+
+        .selection-card {
+            position: relative;
+            height: 500px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            border: 1px solid rgba(96,103,70,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .selection-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .selection-card:nth-child(1) {
+            transition-delay: 0.2s;
+        }
+
+        .selection-card:nth-child(2) {
+            transition-delay: 0.4s;
+        }
+
+        .selection-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(96,103,70,0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .selection-card:hover::before {
+            opacity: 1;
+        }
+
+        .selection-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(96,103,70,0.3);
+        }
+
+        .selection-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            transition: all 0.5s ease;
+        }
+
+        .selection-card:hover .selection-icon {
+            transform: scale(1.1);
+            color: var(--primary);
+        }
+
+        .selection-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            text-align: center;
+        }
+
+        .selection-description {
+            font-size: 1rem;
+            color: rgba(220,220,207,0.7);
+            text-align: center;
+            padding: 0 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 768px) {
+            .selection-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .selection-card {
+                height: 400px;
+            }
+        }
+
+        /* Page Sections */
+        .page-section {
+            min-height: 100vh;
+            padding: 8rem 4rem 4rem;
+        }
+
+        .hero {
+            display: none;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .hero.active {
+            display: flex;
+        }
+
+        .section-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--accent);
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 6rem;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8rem;
+        }
+
+        .project-card {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s ease;
+        }
+
+        .project-card:first-child {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card:not(:first-child) {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-video {
+            width: 100%;
+            height: 600px;
+            background: #1a1a1a;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(96,103,70,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+        }
+
+        .project-info {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .project-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .project-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(220,220,207,0.8);
+            margin-bottom: 2rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.5rem 1.5rem;
+            background: rgba(96,103,70,0.2);
+            border: 1px solid var(--primary);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+        }
+
+        /* About Page */
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-intro {
+            font-size: 1.8rem;
+            font-family: 'Cormorant Garamond', serif;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            color: var(--secondary);
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: rgba(220,220,207,0.8);
+            margin-bottom: 2rem;
+        }
+
+        /* Resume Page */
+        .resume-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .resume-link {
+            display: inline-block;
+            padding: 2rem 4rem;
+            margin-top: 3rem;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--secondary);
+            font-size: 1.1rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
+        .resume-link:hover {
+            background: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(96,103,70,0.4);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 8rem;
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(96,103,70,0.2);
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            color: rgba(220,220,207,0.5);
+            letter-spacing: 0.1em;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .hero-logo {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .page-section {
+                padding: 6rem 2rem 2rem;
+            }
+
+            .project-video {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="nav">
+        <a href="#" class="logo" onclick="showSection('home'); return false;">PORTFOLIO</a>
+        <ul class="nav-links">
+            <a href="#" onclick="showSection('home'); return false;">Home</a>
+            <a href="#" onclick="showSection('portfolio-select'); return false;">Portfolio</a>
+            <a href="#" onclick="showSection('about'); return false;">About</a>
+            <a href="#" onclick="showSection('resume'); return false;">Resume</a>
+        </ul>
+    </nav>
+
+    <!-- Home Hero -->
+    <section id="home" class="hero active">
+        <div class="hero-content">
+            <h1 class="hero-logo">YOUR NAME</h1>
+            <p class="hero-tagline">Game Development • VFX • Motion Design</p>
+            <a href="#" class="cta-button" onclick="showSection('portfolio-select'); return false;">Enter Portfolio</a>
+        </div>
+        
+        <footer style="margin-top: 0; border-top: none; padding: 2rem;">
+            <div class="footer-links">
+                <a href="mailto:your.email@example.com">Email</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+            <p class="copyright">© 2025 Your Name. All Rights Reserved.</p>
+        </footer>
+    </section>
+
+    <!-- Portfolio Selection Page -->
+    <section id="portfolio-select" class="page-section portfolio-selection">
+        <h2 class="section-title">Portfolio</h2>
+        <p class="section-subtitle">Choose Your Journey</p>
+        
+        <div class="selection-grid">
+            <div class="selection-card" onclick="showPortfolio('game-dev')">
+                <div class="selection-icon">🎮</div>
+                <h3 class="selection-title">Game Development</h3>
+                <p class="selection-description">Real-time VFX, Niagara systems, and interactive experiences in Unreal Engine and Unity</p>
+            </div>
+            
+            <div class="selection-card" onclick="showPortfolio('motion-design')">
+                <div class="selection-icon">✨</div>
+                <h3 class="selection-title">Motion + Graphic Design</h3>
+                <p class="selection-description">Kinetic typography, visual storytelling, and atmospheric motion graphics</p>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="mailto:your.email@example.com">Email</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+            <p class="copyright">© 2025 Your Name. All Rights Reserved.</p>
+        </footer>
+    </section>
+
+    <!-- Portfolio Section - Game Development -->
+    <section id="portfolio-game-dev" class="page-section">
+        <h2 class="section-title">Game Development</h2>
+        <p class="section-subtitle">Real-time VFX & Interactive Experiences</p>
+        
+        <div class="portfolio-grid">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-video">
+                    [ VIDEO PLACEHOLDER - Game Project 1 ]
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">Project Title One</h3>
+                    <p class="project-description">
+                        A cinematic exploration of real-time visual effects in Unreal Engine. This project showcases advanced particle systems, Niagara workflows, and dynamic lighting techniques to create immersive environmental storytelling.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Unreal Engine</span>
+                        <span class="tag">Niagara VFX</span>
+                        <span class="tag">Real-time Rendering</span>
+                        <span class="tag">Level Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-video">
+                    [ VIDEO PLACEHOLDER - Game Project 2 ]
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">Project Title Two</h3>
+                    <p class="project-description">
+                        An interactive experience combining procedural generation and player-driven storytelling. Technical implementation includes custom shaders, AI behavior trees, and optimized performance for real-time interaction.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Unity</span>
+                        <span class="tag">C# Scripting</span>
+                        <span class="tag">Shader Graph</span>
+                        <span class="tag">Game Design</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="mailto:your.email@example.com">Email</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+            <p class="copyright">© 2025 Your Name. All Rights Reserved.</p>
+        </footer>
+    </section>
+
+    <!-- Portfolio Section - Motion + Graphic Design -->
+    <section id="portfolio-motion-design" class="page-section">
+        <h2 class="section-title">Motion + Graphic Design</h2>
+        <p class="section-subtitle">Kinetic Typography & Visual Storytelling</p>
+        
+        <div class="portfolio-grid">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-video">
+                    [ VIDEO PLACEHOLDER - Game Project 1 ]
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">Project Title One</h3>
+                    <p class="project-description">
+                        A cinematic exploration of real-time visual effects in Unreal Engine. This project showcases advanced particle systems, Niagara workflows, and dynamic lighting techniques to create immersive environmental storytelling.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Unreal Engine</span>
+                        <span class="tag">Niagara VFX</span>
+                        <span class="tag">Real-time Rendering</span>
+                        <span class="tag">Level Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-video">
+                    [ VIDEO PLACEHOLDER - Motion Design Project ]
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">Project Title Two</h3>
+                    <p class="project-description">
+                        A motion graphics piece blending 2D and 3D elements with kinetic typography. Focused on rhythm, composition, and visual hierarchy to deliver a compelling narrative through motion.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">After Effects</span>
+                        <span class="tag">Motion Graphics</span>
+                        <span class="tag">Typography</span>
+                        <span class="tag">Cinema 4D</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-video">
+                    [ VIDEO PLACEHOLDER - Motion Design Project 1 ]
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">Project Title Three</h3>
+                    <p class="project-description">
+                        A motion graphics piece blending 2D and 3D elements with kinetic typography. Focused on rhythm, composition, and visual hierarchy to deliver a compelling narrative through motion.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">After Effects</span>
+                        <span class="tag">Motion Graphics</span>
+                        <span class="tag">Typography</span>
+                        <span class="tag">Cinema 4D</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-video">
+                    [ VIDEO PLACEHOLDER - Graphic Design Project ]
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">Project Title Four</h3>
+                    <p class="project-description">
+                        A study in atmospheric effects and volumetric lighting. This project explores the intersection of technical execution and artistic vision, creating mood and depth through carefully crafted visual effects.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Houdini</span>
+                        <span class="tag">VFX</span>
+                        <span class="tag">Simulation</span>
+                        <span class="tag">Compositing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="mailto:your.email@example.com">Email</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+            <p class="copyright">© 2025 Your Name. All Rights Reserved.</p>
+        </footer>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="page-section">
+        <h2 class="section-title">About</h2>
+        <p class="section-subtitle">Creative Journey</p>
+        
+        <div class="about-content">
+            <p class="about-intro">
+                I create at the intersection of art and technology, building immersive experiences through game development, visual effects, and motion design.
+            </p>
+            <p class="about-text">
+                My work bridges the gap between technical execution and creative vision. With a foundation in design fundamentals and a passion for real-time rendering, I craft experiences that are both visually compelling and technically sophisticated. From particle systems in Unreal Engine to kinetic typography in motion graphics, each project is an opportunity to explore new ways of visual storytelling.
+            </p>
+            <p class="about-text">
+                I believe that the best creative work happens when artistic sensibility meets technical mastery. Whether developing interactive experiences or crafting cinematic sequences, I approach each project with attention to composition, timing, and the emotional impact of visual design.
+            </p>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="mailto:your.email@example.com">Email</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+            <p class="copyright">© 2025 Your Name. All Rights Reserved.</p>
+        </footer>
+    </section>
+
+    <!-- Resume Section -->
+    <section id="resume" class="page-section">
+        <h2 class="section-title">Resume</h2>
+        <p class="section-subtitle">Experience & Skills</p>
+        
+        <div class="resume-content">
+            <p class="about-text">
+                Download my complete resume to learn more about my experience, technical skills, and previous work.
+            </p>
+            <a href="path/to/your/resume.pdf" class="resume-link" download>Download Resume</a>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="mailto:your.email@example.com">Email</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+            <p class="copyright">© 2025 Your Name. All Rights Reserved.</p>
+        </footer>
+    </section>
+
+    <script>
+        // Navigation scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Portfolio navigation
+        function showPortfolio(type) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.page-section, .hero');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the appropriate portfolio section
+            if (type === 'game-dev') {
+                document.getElementById('portfolio-game-dev').classList.add('active');
+            } else if (type === 'motion-design') {
+                document.getElementById('portfolio-motion-design').classList.add('active');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Trigger animations
+            setTimeout(() => {
+                triggerAnimations();
+            }, 100);
+        }
+
+        // Section switching
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.page-section, .hero');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const selected = document.getElementById(sectionId);
+            selected.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Trigger animations for visible elements
+            setTimeout(() => {
+                triggerAnimations();
+                
+                // Animate selection cards if on portfolio select page
+                if (sectionId === 'portfolio-select') {
+                    const selectionCards = document.querySelectorAll('.selection-card');
+                    selectionCards.forEach(card => card.classList.add('visible'));
+                }
+            }, 100);
+        }
+
+        // Intersection Observer for scroll animations (only for project cards)
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        function triggerAnimations() {
+            const animatedElements = document.querySelectorAll('.project-card, .selection-card');
+            animatedElements.forEach(el => {
+                el.classList.remove('visible');
+                observer.observe(el);
+            });
+        }
+
+        // Initial animation setup
+        window.addEventListener('load', () => {
+            triggerAnimations();
+            
+            // Trigger selection card animations on portfolio select page
+            const selectionCards = document.querySelectorAll('.selection-card');
+            setTimeout(() => {
+                selectionCards.forEach(card => card.classList.add('visible'));
+            }, 300);
+        });
+    </script>
+</body>
+</html>
