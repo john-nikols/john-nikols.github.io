@@ -392,3 +392,27 @@ footer {
   display: block;
   margin-bottom: 1rem;
 }
+
+
+.instagram-container {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 500px !important;
+  margin: 0 auto !important;
+  padding-bottom: 177.78% !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  background: #000 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
+  border: none !important;
+}
+
+.instagram-container iframe {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+}
