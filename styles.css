@@ -345,15 +345,15 @@ footer {
 .instagram-container {
   position: relative !important;
   width: 100% !important;
-  max-width: 500px !important;
-  margin: 0 auto !important;
+  max-width: 400px !important;
+  margin: 0 auto 2rem !important;
   padding-bottom: 177.78% !important;
   height: 0 !important;
   overflow: hidden !important;
   background: #000 !important;
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
-  border: none !important;
+  border: 1px solid rgba(96,103,70,0.2) !important;
 }
 
 .instagram-container iframe {
@@ -443,6 +443,11 @@ footer {
   }
   .about-content {
     padding: 0 0.5rem;
+  }
+  
+  /* Instagram video containers on mobile */
+  .instagram-container {
+    max-width: 320px !important;
   }
   
   .project-video { height: 300px; }
